@@ -175,7 +175,7 @@ export function Workspace() {
   );
   const recommendationPanel = (
     <div className="space-y-2">
-      {compareNote && <p className="text-xs text-[#7a4b12]">{compareNote}</p>}
+      {compareNote && <p className="text-xs text-brand-dark">{compareNote}</p>}
       <RecommendationPanel
         ranked={ranked}
         visible={visible}
@@ -222,40 +222,53 @@ export function Workspace() {
     />
   );
 
-  return (
-    <div className={meetingMode ? "min-h-dvh bg-[#f3f5f7]" : "flex h-dvh flex-col overflow-hidden bg-[#f3f5f7]"}>
-      <header className="shrink-0 border-b border-[#e1e6eb] bg-white">
-        <div className={`flex items-center justify-between gap-3 px-4 py-3 ${meetingMode ? "mx-auto max-w-[440px]" : ""}`}>
-          <div className="flex items-center gap-2">
-            <Compass className="h-5 w-5 text-[#1f4e5f]" aria-hidden />
-            <div>
-              <p className="text-sm font-semibold tracking-tight">GradGuide Compass</p>
-              <p className="text-[11px] text-[#5c6773]">Counselling workspace</p>
-            </div>
+  const header = (
+    <header className="shrink-0 border-b border-line bg-surface">
+      <div className="flex items-center justify-between gap-3 px-4 py-3">
+        <div className="flex items-center gap-2">
+          <Compass className="h-5 w-5 text-brand" aria-hidden />
+          <div>
+            <p className="text-sm font-semibold tracking-tight">GradGuide Compass</p>
+            <p className="text-[11px] text-muted">
+              {meetingMode ? "Beside the call" : "Counselling workspace"}
+            </p>
           </div>
-          <button
-            type="button"
-            onClick={() => setMeetingMode((current) => !current)}
-            className={`rounded-md border px-2.5 py-1.5 text-xs font-medium ${meetingMode ? "border-[#1f4e5f] bg-[#1f4e5f] text-white" : "border-[#d5dbe1] bg-white"}`}
-            aria-pressed={meetingMode}
-          >
-            Meeting mode
-          </button>
         </div>
-      </header>
-      {meetingMode ? (
-        <main className="mx-auto flex w-full max-w-[440px] flex-col gap-3 px-3 py-3">
-          {profilePanel}
-          {recommendationPanel}
-          {contextPanel}
-        </main>
-      ) : (
-        <main className="grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-y-auto p-3 lg:grid-cols-[300px_minmax(0,1fr)_360px] lg:overflow-hidden">
-          <div className="lg:overflow-y-auto">{profilePanel}</div>
-          <div className="lg:overflow-y-auto">{recommendationPanel}</div>
-          <div className="lg:overflow-y-auto">{contextPanel}</div>
-        </main>
-      )}
+        <button
+          type="button"
+          onClick={() => setMeetingMode((current) => !current)}
+          className={`rounded-md border px-2.5 py-1.5 text-xs font-medium ${meetingMode ? "border-brand bg-brand text-white" : "border-line bg-surface"}`}
+          aria-pressed={meetingMode}
+        >
+          Meeting mode
+        </button>
+      </div>
+    </header>
+  );
+
+  if (meetingMode) {
+    return (
+      <div className="flex min-h-dvh justify-end bg-background">
+        <div className="flex h-dvh w-full max-w-[440px] flex-col border-l border-line bg-background">
+          {header}
+          <main className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-3 py-3">
+            {profilePanel}
+            {recommendationPanel}
+            {contextPanel}
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex h-dvh flex-col overflow-hidden bg-background">
+      {header}
+      <main className="grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-y-auto p-3 lg:grid-cols-[300px_minmax(0,1fr)_360px] lg:overflow-hidden">
+        <div className="lg:overflow-y-auto">{profilePanel}</div>
+        <div className="lg:overflow-y-auto">{recommendationPanel}</div>
+        <div className="lg:overflow-y-auto">{contextPanel}</div>
+      </main>
     </div>
   );
 }

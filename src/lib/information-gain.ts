@@ -1,3 +1,4 @@
+import { COUNSELLING_COUNTRIES } from "./countries";
 import { rankCourses, topIds } from "./recommend";
 import type { AskNextResult, Course, StudentProfile } from "./types";
 
@@ -59,7 +60,13 @@ function candidatesFor(profile: StudentProfile): Candidate[] {
         ? ["15000", "22000", "30000", "45000"]
         : currency === "USD"
           ? ["20000", "35000", "50000", "70000"]
-          : ["20000", "25000", "35000", "50000", "70000"];
+          : currency === "INR"
+            ? ["1500000", "2000000", "2500000", "3500000", "5000000"]
+            : currency === "AUD"
+              ? ["30000", "45000", "55000", "70000"]
+              : currency === "CAD"
+                ? ["20000", "30000", "45000", "60000"]
+                : ["20000", "25000", "35000", "50000", "70000"];
     candidates.push({
       fieldId: "maxTuitionBudget",
       question: "What's the maximum tuition budget you're comfortable with?",
@@ -83,7 +90,7 @@ function candidatesFor(profile: StudentProfile): Candidate[] {
     candidates.push({
       fieldId: "preferredCountry",
       question: "Which country would you most like to study in?",
-      profiles: ["Ireland", "United Kingdom", "United States"].map((country) =>
+      profiles: COUNSELLING_COUNTRIES.map((country) =>
         withField(profile, "preferredCountry", country),
       ),
     });
@@ -147,7 +154,7 @@ function candidatesFor(profile: StudentProfile): Candidate[] {
     candidates.push({
       fieldId: "preferredIntake",
       question: "Which intake is the student targeting?",
-      profiles: ["September", "January", "October"].map((intake) =>
+      profiles: ["September", "January", "February", "March", "July", "October"].map((intake) =>
         withField(profile, "preferredIntake", intake),
       ),
     });

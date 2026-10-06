@@ -1,3 +1,4 @@
+import { COUNSELLING_COUNTRIES } from "./countries";
 import { rankCourses, topIds } from "./recommend";
 import type {
   Course,
@@ -128,7 +129,7 @@ function scenariosFor(
       .map((country) => country.trim().toLowerCase())
       .filter(Boolean),
   );
-  const alternate = ["Ireland", "United Kingdom", "United States"].find(
+  const alternate = COUNSELLING_COUNTRIES.find(
     (country) => !used.has(country.toLowerCase()),
   );
   if (alternate) {

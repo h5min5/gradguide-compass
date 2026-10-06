@@ -7,7 +7,7 @@ export type DataConfidence = "high" | "medium" | "low";
 
 export type StabilityLabel = "HIGH" | "MEDIUM" | "LOW";
 
-export type CurrencyCode = "EUR" | "GBP" | "USD";
+export type CurrencyCode = "EUR" | "GBP" | "USD" | "INR" | "AUD" | "CAD";
 
 export interface Course {
   id: string;

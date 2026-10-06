@@ -8,7 +8,14 @@ export const EUR_PER_UNIT: Record<CurrencyCode, number> = {
   EUR: 1,
   GBP: 1.17,
   USD: 0.92,
+  AUD: 0.6,
+  CAD: 0.66,
+  INR: 0.0104,
 };
+
+/** Shown wherever a budget is compared with a published fee. */
+export const FX_COMPARISON_NOTE =
+  "Budget fit uses approximate rates of 1 GBP = 1.17 EUR, 1 USD = 0.92 EUR, 1 AUD = 0.60 EUR, 1 CAD = 0.66 EUR, and 1 INR = 0.0104 EUR. Cards still show the fee in the currency printed by the university.";
 
 export function toEur(
   amount: number,

@@ -15,7 +15,7 @@ Compass is one workspace, not a chat box with a catalogue glued on.
 - The counsellor can shortlist a course the engine did not put first, and must record why.
 - Groq is available as Ask Compass. It explains the engine's numbers in plain language. It does not choose them.
 
-Meeting mode narrows the same workspace so it can sit beside a video call.
+Meeting mode pins the same workspace to the right edge of the screen, the way a counsellor keeps notes beside Google Meet. The profile form stays open so details can be typed during the call. The demo student is available only in the full workspace.
 
 ## Architecture
 
@@ -103,7 +103,7 @@ The default weights sum to 100. Each factor is a 0–1 ratio, rounded to points.
 | Country preference | 10 | Preferred country is full points. Secondary country is partial. No preference stays neutral. |
 | Intake fit | 10 | A listed intake that matches the preference is full points. No preference stays neutral. |
 
-Budget comparison converts GBP and USD into EUR at approximate rates (1 GBP = 1.17 EUR, 1 USD = 0.92 EUR). Those rates are for ordering only. The card still shows the fee in the currency printed by the university.
+Budget comparison converts GBP, USD, AUD, CAD, and INR into EUR at approximate rates (1 GBP = 1.17 EUR, 1 USD = 0.92 EUR, 1 AUD = 0.60 EUR, 1 CAD = 0.66 EUR, 1 INR = 0.0104 EUR). A counsellor can enter the student's ceiling in INR as well as EUR, GBP, or USD. Those rates are for ordering only. The card still shows the fee in the currency printed by the university.
 
 Changing the profile changes these ratios. The demo student is not a special case in the code.
 
@@ -184,6 +184,8 @@ Each record in `data/courses.json` includes:
 
 `tuitionFee` is null when the captured page did not label an international total. A null fee makes budget fit neutral. It is not filled with a guess.
 
+The catalogue includes programmes in Ireland, the United Kingdom, the United States, Australia, and Canada. Student budgets can be entered in EUR, GBP, USD, or INR. Course fees stay in the currency printed on the university page, including AUD and CAD.
+
 ## Data update and provenance strategy
 
 Entries were read from public programme or fee pages on 6 October 2026. `officialUrl` is that page. `dataStatus` says the entry is a prototype reading, not an official verification. `dataConfidence` is lower when tuition, English, or the academic class was not in the captured text.
@@ -260,7 +262,7 @@ If the variable is absent, the workspace still ranks courses and Ask Compass sho
 - Currency conversion uses fixed approximate rates.
 - GRE is collected and stored with the profile. It is not part of the score, because a GRE rule was not encoded from the pages.
 - The decision ledger is local to the browser.
-- US pages that were readable often omitted a single international tuition total, so those records are thinner than the UK and Ireland ones.
+- US, Australian, and Canadian pages that were readable often omitted a single international tuition total, so those records are thinner than the ones where the official page labelled a fee.
 - Ask Compass can be wrong about emphasis even when it is told not to invent facts. The numbers on the cards remain the source of truth.
 
 ## Future improvements

@@ -1,12 +1,12 @@
 "use client";
 
-import { formatDuration, formatMoney } from "@/lib/currency";
+import { formatDuration, formatMoney, FX_COMPARISON_NOTE } from "@/lib/currency";
 import { eligibilityLabel, eligibilityTone, stabilityLabel, stabilityTone } from "@/lib/format";
 import type { CatalogueFilters } from "@/lib/filters";
 import type { LedgerEntry, RankedCourse, StabilityInsight } from "@/lib/types";
 
 const selectClass =
-  "rounded-md border border-[#d5dbe1] bg-white px-2 py-1.5 text-xs text-[#1c2430] outline-none focus:border-[#1f4e5f]";
+  "rounded-md border border-line bg-surface px-2 py-1.5 text-xs text-ink outline-none focus:border-brand";
 
 export function RecommendationPanel({
   ranked,
@@ -49,12 +49,12 @@ export function RecommendationPanel({
 
   return (
     <section className="space-y-3">
-      <div className="rounded-lg border border-[#e1e6eb] bg-white p-3">
+      <div className="rounded-lg border border-line bg-surface p-3">
         <div className="flex items-end justify-between gap-3">
           <div>
             <h2 className="text-sm font-semibold tracking-tight">Ranked recommendations</h2>
-            <p className="mt-1 text-xs text-[#5c6773]">
-              {visible.length} of {ranked.length} courses. Order follows eligibility, then match score. Budget fit uses approximate rates of 1 GBP = 1.17 EUR and 1 USD = 0.92 EUR.
+            <p className="mt-1 text-xs text-muted">
+              {visible.length} of {ranked.length} courses. Order follows eligibility, then match score. {FX_COMPARISON_NOTE}
             </p>
           </div>
         </div>
@@ -63,7 +63,7 @@ export function RecommendationPanel({
             value={filters.keyword}
             onChange={(event) => onFilters({ ...filters, keyword: event.target.value })}
             placeholder="Search courses, universities, subjects"
-            className="rounded-md border border-[#d5dbe1] px-2.5 py-1.5 text-sm outline-none focus:border-[#1f4e5f] md:col-span-2 xl:col-span-4"
+            className="rounded-md border border-line px-2.5 py-1.5 text-sm outline-none focus:border-brand md:col-span-2 xl:col-span-4"
           />
           <select className={selectClass} value={filters.university} onChange={(event) => onFilters({ ...filters, university: event.target.value })}>
             <option value="">All universities</option>
@@ -91,20 +91,20 @@ export function RecommendationPanel({
             value={filters.maxTuitionEur}
             onChange={(event) => onFilters({ ...filters, maxTuitionEur: event.target.value })}
             placeholder="Max tuition in EUR"
-            className="rounded-md border border-[#d5dbe1] px-2.5 py-1.5 text-xs outline-none focus:border-[#1f4e5f]"
+            className="rounded-md border border-line px-2.5 py-1.5 text-xs outline-none focus:border-brand"
           />
-          <button type="button" className="rounded-md border border-[#d5dbe1] px-2 py-1.5 text-xs" onClick={() => onFilters({ keyword: "", university: "", country: "", subject: "", maxTuitionEur: "", intake: "", eligibility: "" })}>
+          <button type="button" className="rounded-md border border-line px-2 py-1.5 text-xs" onClick={() => onFilters({ keyword: "", university: "", country: "", subject: "", maxTuitionEur: "", intake: "", eligibility: "" })}>
             Reset filters
           </button>
         </div>
       </div>
 
       {shortlist.length > 0 && (
-        <div className="rounded-lg border border-[#c9d7de] bg-[#f4f8f9] px-3 py-2">
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-[#1f4e5f]">Counsellor shortlist</p>
+        <div className="rounded-lg border border-line bg-brand-soft px-3 py-2">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-brand">Counsellor shortlist</p>
           <ul className="mt-1 space-y-1">
             {shortlist.map((entry) => (
-              <li key={entry.courseId} className="text-xs text-[#1c2430]">
+              <li key={entry.courseId} className="text-xs text-ink">
                 Priority {entry.newPriority}: {entry.courseName} · system rank #{entry.originalRank} when recorded
               </li>
             ))}
@@ -113,7 +113,7 @@ export function RecommendationPanel({
       )}
 
       {cards.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-[#d5dbe1] bg-white px-4 py-8 text-sm text-[#5c6773]">
+        <div className="rounded-lg border border-dashed border-line bg-surface px-4 py-8 text-sm text-muted">
           No courses match these filters. Reset them to see the ranked list again.
         </div>
       ) : (
@@ -121,28 +121,28 @@ export function RecommendationPanel({
           const stability = stabilityById.get(item.course.id);
           const priority = shortlist.find((entry) => entry.courseId === item.course.id);
           return (
-            <article key={item.course.id} className="rounded-lg border border-[#e1e6eb] bg-white p-3">
+            <article key={item.course.id} className="rounded-lg border border-line bg-surface p-3">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-[#5c6773]">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-muted">
                     System rank #{item.rank}
                     {priority ? ` · Counsellor priority ${priority.newPriority}` : ""}
                   </p>
                   <h3 className="mt-0.5 text-base font-semibold tracking-tight">{item.course.courseName}</h3>
-                  <p className="text-sm text-[#3d4854]">
+                  <p className="text-sm text-ink">
                     {item.course.university} · {item.course.city}, {item.course.country}
                   </p>
                 </div>
                 <div className="shrink-0 text-right">
-                  <p className="text-2xl font-semibold tabular-nums text-[#1f4e5f]">{item.overallScore}%</p>
-                  <p className="text-[11px] text-[#5c6773]">match</p>
+                  <p className="text-2xl font-semibold tabular-nums text-brand">{item.overallScore}%</p>
+                  <p className="text-[11px] text-muted">match</p>
                 </div>
               </div>
-              <dl className="mt-3 grid grid-cols-2 gap-2 text-xs text-[#3d4854] sm:grid-cols-4">
-                <div><dt className="text-[#5c6773]">Tuition</dt><dd>{formatMoney(item.course.tuitionFee, item.course.currency)}</dd></div>
-                <div><dt className="text-[#5c6773]">Duration</dt><dd>{formatDuration(item.course.durationMonths)}</dd></div>
-                <div><dt className="text-[#5c6773]">Intake</dt><dd>{item.course.intakes.join(", ") || "Not captured"}</dd></div>
-                <div><dt className="text-[#5c6773]">Confidence</dt><dd className="capitalize">{item.course.dataConfidence}</dd></div>
+              <dl className="mt-3 grid grid-cols-2 gap-2 text-xs text-ink sm:grid-cols-4">
+                <div><dt className="text-muted">Tuition</dt><dd>{formatMoney(item.course.tuitionFee, item.course.currency)}</dd></div>
+                <div><dt className="text-muted">Duration</dt><dd>{formatDuration(item.course.durationMonths)}</dd></div>
+                <div><dt className="text-muted">Intake</dt><dd>{item.course.intakes.join(", ") || "Not captured"}</dd></div>
+                <div><dt className="text-muted">Confidence</dt><dd className="capitalize">{item.course.dataConfidence}</dd></div>
               </dl>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 <span className={`rounded-full border px-2 py-0.5 text-[11px] font-medium ${eligibilityTone(item.eligibilityStatus)}`}>
@@ -155,19 +155,19 @@ export function RecommendationPanel({
                 )}
               </div>
               {item.warnings[0] && (
-                <p className="mt-2 text-xs leading-5 text-[#7a4b12]">{item.warnings[0]}</p>
+                <p className="mt-2 text-xs leading-5 text-brand-dark">{item.warnings[0]}</p>
               )}
               {stability && (
-                <p className="mt-1 text-xs leading-5 text-[#5c6773]">{stability.summary}</p>
+                <p className="mt-1 text-xs leading-5 text-muted">{stability.summary}</p>
               )}
               <div className="mt-3 flex flex-wrap gap-1.5">
-                <button type="button" className="rounded-md bg-[#1f4e5f] px-2 py-1 text-[11px] font-medium text-white" onClick={() => onWhy(item.course.id)}>Why this?</button>
-                <button type="button" className="rounded-md border border-[#d5dbe1] px-2 py-1 text-[11px] font-medium" onClick={() => onCompare(item.course.id)}>
+                <button type="button" className="rounded-md bg-brand px-2 py-1 text-[11px] font-medium text-white" onClick={() => onWhy(item.course.id)}>Why this?</button>
+                <button type="button" className="rounded-md border border-line px-2 py-1 text-[11px] font-medium" onClick={() => onCompare(item.course.id)}>
                   {compareIds.includes(item.course.id) ? "In compare" : "Compare"}
                 </button>
-                <button type="button" className="rounded-md border border-[#d5dbe1] px-2 py-1 text-[11px] font-medium" onClick={() => onAlternatives(item.course.id)}>Alternatives</button>
-                <button type="button" className="rounded-md border border-[#d5dbe1] px-2 py-1 text-[11px] font-medium" onClick={() => onDetails(item.course.id)}>Details</button>
-                <button type="button" className="rounded-md border border-[#d5dbe1] px-2 py-1 text-[11px] font-medium" onClick={() => onPrioritize(item.course.id)}>Prioritize</button>
+                <button type="button" className="rounded-md border border-line px-2 py-1 text-[11px] font-medium" onClick={() => onAlternatives(item.course.id)}>Alternatives</button>
+                <button type="button" className="rounded-md border border-line px-2 py-1 text-[11px] font-medium" onClick={() => onDetails(item.course.id)}>Details</button>
+                <button type="button" className="rounded-md border border-line px-2 py-1 text-[11px] font-medium" onClick={() => onPrioritize(item.course.id)}>Prioritize</button>
               </div>
             </article>
           );

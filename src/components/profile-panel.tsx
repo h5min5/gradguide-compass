@@ -1,14 +1,15 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { COUNSELLING_COUNTRIES } from "@/lib/countries";
 import { profileCompleteness } from "@/lib/profile";
 import type { CurrencyCode, StudentProfile } from "@/lib/types";
 
 const inputClass =
-  "w-full rounded-md border border-[#d5dbe1] bg-white px-2.5 py-1.5 text-sm text-[#1c2430] outline-none focus:border-[#1f4e5f]";
+  "w-full rounded-md border border-line bg-surface px-2.5 py-1.5 text-sm text-ink outline-none focus:border-brand";
 
-const COUNTRIES = ["", "Ireland", "United Kingdom", "United States"];
-const INTAKES = ["", "September", "January", "October", "May"];
+const COUNTRIES = ["", ...COUNSELLING_COUNTRIES];
+const INTAKES = ["", "September", "January", "February", "March", "July", "October", "May"];
 const AREAS = [
   "",
   "Artificial Intelligence",
@@ -27,7 +28,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-[#5c6773]">
+      <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-muted">
         {label}
       </span>
       {children}
@@ -102,6 +103,7 @@ export function ProfilePanel({
             <option value="EUR">EUR</option>
             <option value="GBP">GBP</option>
             <option value="USD">USD</option>
+            <option value="INR">INR</option>
           </select>
         </Field>
       </div>
@@ -137,47 +139,30 @@ export function ProfilePanel({
   );
 
   return (
-    <section className="rounded-lg border border-[#e1e6eb] bg-white">
-      <div className="border-b border-[#e1e6eb] px-4 py-3">
+    <section className="rounded-lg border border-line bg-surface">
+      <div className="border-b border-line px-4 py-3">
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-sm font-semibold tracking-tight">Student profile</h2>
-          <span className="text-xs text-[#5c6773]">{completeness.percent}% complete</span>
+          <span className="text-xs text-muted">{completeness.percent}% complete</span>
         </div>
-        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[#e7ebef]">
-          <div className="h-full rounded-full bg-[#1f4e5f]" style={{ width: `${completeness.percent}%` }} />
+        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-brand-soft">
+          <div className="h-full rounded-full bg-brand" style={{ width: `${completeness.percent}%` }} />
         </div>
-        <p className="mt-2 text-xs leading-5 text-[#5c6773]">
+        <p className="mt-2 text-xs leading-5 text-muted">
           {completeness.filled} of {completeness.total} fields. Recommendations run with a partial profile.
         </p>
         <div className="mt-3 flex gap-2">
-          <button type="button" onClick={onDemo} className="rounded-md bg-[#1f4e5f] px-2.5 py-1.5 text-xs font-medium text-white hover:bg-[#183e4c]">
-            Load demo student
-          </button>
-          <button type="button" onClick={onClear} className="rounded-md border border-[#d5dbe1] px-2.5 py-1.5 text-xs font-medium text-[#1c2430] hover:bg-[#f4f7f8]">
+          {!meetingMode && (
+            <button type="button" onClick={onDemo} className="rounded-md bg-brand px-2.5 py-1.5 text-xs font-medium text-white hover:bg-brand-dark">
+              Load demo student
+            </button>
+          )}
+          <button type="button" onClick={onClear} className="rounded-md border border-line px-2.5 py-1.5 text-xs font-medium text-ink hover:bg-surface-soft">
             Clear
           </button>
         </div>
       </div>
-      {meetingMode ? (
-        <div className="space-y-3 px-4 py-3 text-sm">
-          <dl className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
-            <div><dt className="text-[#5c6773]">Student</dt><dd>{profile.name || "Unnamed"}</dd></div>
-            <div><dt className="text-[#5c6773]">Result</dt><dd>{profile.academicScore || "Unknown"}</dd></div>
-            <div className="col-span-2"><dt className="text-[#5c6773]">Degree</dt><dd>{profile.degree || "Not provided"}</dd></div>
-            <div className="col-span-2"><dt className="text-[#5c6773]">Career</dt><dd>{profile.careerGoal || "Not provided"}</dd></div>
-            <div><dt className="text-[#5c6773]">Country</dt><dd>{profile.preferredCountry || "Open"}</dd></div>
-            <div><dt className="text-[#5c6773]">Budget</dt><dd>{profile.maxTuitionBudget ? `${profile.budgetCurrency} ${profile.maxTuitionBudget}` : "Unknown"}</dd></div>
-            <div><dt className="text-[#5c6773]">Intake</dt><dd>{profile.preferredIntake || "Open"}</dd></div>
-            <div><dt className="text-[#5c6773]">IELTS</dt><dd>{profile.ielts || "Unknown"}</dd></div>
-          </dl>
-          <details>
-            <summary className="cursor-pointer text-xs font-medium text-[#1f4e5f]">Edit profile</summary>
-            <div className="mt-3">{form}</div>
-          </details>
-        </div>
-      ) : (
-        <div className="px-4 py-3">{form}</div>
-      )}
+      <div className="px-4 py-3">{form}</div>
     </section>
   );
 }

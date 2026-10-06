@@ -2,19 +2,35 @@
 
 :root {
   color-scheme: light;
-  --background: #f3f5f7;
-  --foreground: #1c2430;
+  --background: #fbf7f1;
+  --surface: #ffffff;
+  --surface-soft: #fceae6;
+  --brand: #eb6461;
+  --brand-dark: #c94f4b;
+  --brand-soft: #fbe5e2;
+  --text-primary: #0b0b0a;
+  --text-secondary: #5e5a56;
+  --border: #e5ddd4;
+  --foreground: var(--text-primary);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-soft: var(--brand-soft);
+  --color-ink: var(--text-primary);
+  --color-muted: var(--text-secondary);
+  --color-line: var(--border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: var(--text-primary);
   font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
 }

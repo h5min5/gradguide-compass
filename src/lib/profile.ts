@@ -57,7 +57,14 @@ export function sanitizeProfile(value: unknown): StudentProfile {
     const raw = source[key];
     if (typeof raw === "string") next[key] = raw.slice(0, 240);
   }
-  if (source.budgetCurrency === "EUR" || source.budgetCurrency === "GBP" || source.budgetCurrency === "USD") {
+  if (
+    source.budgetCurrency === "EUR" ||
+    source.budgetCurrency === "GBP" ||
+    source.budgetCurrency === "USD" ||
+    source.budgetCurrency === "INR" ||
+    source.budgetCurrency === "AUD" ||
+    source.budgetCurrency === "CAD"
+  ) {
     next.budgetCurrency = source.budgetCurrency;
   }
   return next;

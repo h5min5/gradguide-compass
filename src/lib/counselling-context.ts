@@ -1,4 +1,5 @@
 import { findAlternatives } from "./alternatives";
+import { FX_COMPARISON_NOTE } from "./currency";
 import { askNext } from "./information-gain";
 import { rankCourses } from "./recommend";
 import { recommendationStability } from "./stability";
@@ -82,8 +83,7 @@ export function buildCounsellingContext(
   return {
     instruction:
       "These facts and scores were produced by the application. Quote them. Do not calculate new scores, eligibility, tuition, or rankings.",
-    fxNote:
-      "Budget fit uses approximate comparison rates of 1 GBP = 1.17 EUR and 1 USD = 0.92 EUR. Fees stay in the currency captured from the university page.",
+    fxNote: FX_COMPARISON_NOTE,
     academicScaleNote:
       "Academic thresholds are Compass comparison floors on a 0–100 scale derived from the requirement label. They are not a university's official conversion table.",
     student: profile,
