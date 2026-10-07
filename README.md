@@ -1,6 +1,52 @@
 # GradGuide Compass
 
-GradGuide Compass is a counselling workspace for study-abroad advisers. A counsellor enters whatever is known about a student. The app ranks postgraduate computing courses, explains the score, and keeps the adviser in control during a live call.
+## **Recommendation Approach**
+
+I built the Course Recommendation Assistant with one main idea in mind which is it should help counsellors make better and more consistent recommendations, without trying to replace their judgement. During a counselling session, there are many things to consider at the same time, such as the student’s academic background, career plans, interests, budget, preferred country and intake. The tool brings these factors together so that the counsellor can quickly understand which courses may be a good fit and, more importantly, why. 
+
+I kept the core recommendation system rule based rather than asking an LLM to directly recommend courses. The system first checks whether the student appears to meet the available requirements for a course. A course can be marked as Likely Compatible, Needs Verification, or Requirement Mismatch. I made a distinction between missing information and an actual mismatch. For example, if the student has not entered an IELTS score, the system does not reject the course; it simply tells the counsellor that this requirement still needs to be checked. 
+
+The courses are then ranked using a match score based on academic fit, career goals, subject interests, budget, country preference and intake. The counsellor can also see how that score was calculated. I felt this was important because showing someone a “92% match” is not very useful unless they can understand what contributed to that number. 
+
+I used Groq for Ask Compass, the conversational part of the application. The LLM is given information that has already been calculated by the recommendation engine and uses it to answer the counsellor’s questions naturally. It does not decide the scores or eligibility itself. This keeps the recommendations predictable while still making the tool easy to interact with. 
+
+## Interface 
+
+I wanted the interface to work well during an actual counselling call, rather than feeling like a normal course searching website. The main workspace therefore keeps the student profile and recommendations together. A counsellor can update the student’s information and immediately see how the recommendations change. 
+
+Each course card shows the information that I felt would be most useful during a conversation: match score, university, fees, intake, eligibility and the main reasons behind the recommendation. From there, the counsellor can look at the detailed score, compare courses or find alternatives. 
+
+I also created a Meeting Mode specifically for live counselling. When it is enabled, the interface becomes a compact side panel that can be kept next to a Google Meet window. It removes some of the less important information and focuses on the student summary, top recommendations, warnings, Ask Next and Ask Compass. 
+
+For the visual design, I took inspiration from GradGuide’s existing website and used a similar cream, coral and dark colour palette. I wanted the tool to feel like something that could naturally be part of GradGuide rather than a completely separate product. 
+
+## Three Feature Decisions 
+
+For the three additional features, I focused on problems that could realistically cause two counsellors to give different recommendations to similar students. 
+
+**1. Ask Next** 
+
+During a counselling call, a student may have several pieces of information missing. However, asking for all of them immediately is not always useful. Ask Next looks at what is currently missing and tries to identify the question that would have the biggest effect on the recommendations. 
+
+For example, if several good courses are above the student’s possible budget, knowing their maximum budget may be more useful at that moment than knowing their graduation year. The tool therefore suggests that question and briefly explains why it matters. I added this feature to help make the conversation itself more focused. 
+
+**2. Recommendation Stability**
+
+I also wanted to show that a high match score does not always mean a course is an obvious choice. Sometimes a course may be ranked highly because of one particular preference. 
+
+The Stability feature tests small changes to factors such as budget, country preference and the importance of career or subject alignment. It then checks whether the course still remains among the top recommendations. This gives the counsellor a simple indication of whether a recommendation is fairly stable or whether it could change easily if the student’s priorities change. 
+
+**3. Counsellor Override & Decision Ledger** 
+
+Finally, I wanted to make sure the counsellor always had the final say. A real conversation can reveal things that are difficult to capture through form fields alone. Because of this, the counsellor can prioritise a different course even when it is not ranked first by the system. 
+
+When they do this, they can record the reason, such as a stronger student preference, programme content or career considerations. The original ranking and the counsellor’s decision are both kept in a Decision Trail. This way, the system does not remove human judgement; it simply makes that judgement easier to understand later. 
+
+Together, these three features cover different stages of a counselling session: Ask Next helps the counsellor understand the student better, Stability helps them judge the recommendations, and the Decision Ledger records the final human decision. The overall goal was to make course recommendations more consistent and explainable while still keeping the counsellor at the centre of the process. 
+
+ ## Demo
+- Live Application: [https://gradguide-compass.vercel.app/]
+- Video Walkthrough: [video link]
 
 ## Problem being solved
 
@@ -8,7 +54,7 @@ During a Google Meet, a counsellor has to turn a partial student story into a sh
 
 ## Product approach
 
-Compass is one workspace, not a chat box with a catalogue glued on.
+Compass is designed as a complete counselling workspace rather than a standalone course-search chatbot.
 
 - The student profile accepts partial information. Empty fields stay neutral or unverified. They do not reject the student.
 - A TypeScript engine checks eligibility, scores fit, ranks courses, suggests alternatives, picks the next question, and tests how stable the top of the list is.
@@ -35,7 +81,7 @@ POST /api/chat
   sends that JSON to Groq with a grounded system prompt
 ```
 
-There is no login and no database. The course catalogue is `data/courses.json`. Counsellor decisions stay in the browser.
+The course catalogue is `data/courses.json`. Counsellor decisions stay in the browser.
 
 Main pieces:
 
@@ -273,6 +319,4 @@ If the variable is absent, the workspace still ranks courses and Ask Compass sho
 - Calendar holds and intake deadlines next to the score.
 - More US programme pages once a labelled international total is on the page.
 
-## Demo video placeholder
 
-[Demo video placeholder: add a 3–5 minute walkthrough link here]
