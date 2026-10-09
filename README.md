@@ -46,7 +46,7 @@ Together, these three features cover different stages of a counselling session: 
 
  ## Demo
 - Live Application: [https://gradguide-compass.vercel.app/]
-- Video Walkthrough: [video link]
+- Video Walkthrough: [https://drive.google.com/file/d/1ln0qLzbg-n4YYNBsURQ55hLYZ2Rpv64z/view?usp=sharing]
 
 ## Problem being solved
 
